@@ -1,4 +1,4 @@
-# IMRFROC
+# IMFROC
 Supplementary codes to the article 
 
 "AN ITERATIVE METHOD FOR ELLIPTIC PROBLEMS WITH
