@@ -1,2 +1,5 @@
 # HomoPaper
-Supplementary codes to an article
+Supplementary codes to the article 
+
+"AN ITERATIVE METHOD FOR ELLIPTIC PROBLEMS WITH
+RAPIDLY OSCILLATING COEFFICIENTS"
