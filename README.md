@@ -1,7 +1,7 @@
 # homo_mg
-Supplementary codes to the article 
+This repository contains the code associated with the article 
 
-"AN ITERATIVE METHOD FOR ELLIPTIC PROBLEMS WITH
-RAPIDLY OSCILLATING COEFFICIENTS"
+S. Armstrong, A. Hannukainen, T. Kuusi, and J.-C. Mourrat. An iterative method for elliptic problems with rapidly oscillating coefficients. Preprint, arXiv:
+
 
 
