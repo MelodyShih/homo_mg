@@ -1,5 +1,7 @@
-# IMFROC
+# homo_mg
 Supplementary codes to the article 
 
 "AN ITERATIVE METHOD FOR ELLIPTIC PROBLEMS WITH
 RAPIDLY OSCILLATING COEFFICIENTS"
+
+
