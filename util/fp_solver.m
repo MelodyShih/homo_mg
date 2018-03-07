@@ -16,7 +16,7 @@
 %   mesh    = mesh structure representing the triangulation, see inittri.m
 %  
 %   At      = Nt-vector of the value of coefficient A over mesh. 
-%             A_|K = At(K). Scalar At is appropriately extended vector of
+%             A_|K = At(K). Scalar At is appropriately extended to vector of
 %             correct size.
 %
 %   Ahomo   = Homogenised coefficient correspondig to At. 

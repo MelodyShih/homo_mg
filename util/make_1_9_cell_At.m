@@ -4,7 +4,7 @@
 %
 % This function creates elemenwise coefficient vector At 
 % corresponding to the coefficient field A. The coefficient field A has 
-% value 1 / 9 with 50 / 50 probility in cell z + (0,1) z \in Z^2.
+% value 1 / 9 with 50 / 50 probability in cell z + (0,1) z \in Z^2.
 %
 %
 %  CALLING SYNTAX IS

@@ -12,8 +12,10 @@
 % The linear system is solved using fixed point iteration from Theorem 1.1.
 % The parameter Lambda is fixed and the size of the domain is varied
 % between [10:20:100]. Due to the random nature of the problem an
-% averaged conraction factor is computed for each r from ten simulation
+% averaged contraction factor is computed for each r from ten simulation
 % runs. This corresponds to test in Figure 4.
+% 
+% requires util-folder in the path
 % 
 
 close all;
@@ -37,7 +39,6 @@ for i=1:length(r_list)
         At = make_1_9_cell_At(r, t2c);
 
         % The corresponding homogenised parameter is 3.
-        % lambda is chosen as 0.3
         Ahomo = 3;
 
         [x,error] = fp_solver(mesh, At, Ahomo, L);

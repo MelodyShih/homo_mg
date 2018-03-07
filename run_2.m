@@ -10,11 +10,13 @@
 % P1-elements is used.
 %
 % The linear system is solved using fixed point iteration from Theorem 1.1.
-% The size of the domain is fixed and parameter Lambda is varied
-% logarihmically between values 0.01 and 0.5. Due to the random nature 
-% of the problem an averaged conraction factor is computed for each 
+% The size of the domain is fixed and the parameter Lambda is varied
+% logarithmically between values 0.01 and 0.5. Due to the random nature 
+% of the problem an averaged contraction factor is computed for each 
 % Lambda. This corresponds to test in Figure 4.
 % 
+% requires util-folder in the path
+%
 
 clear all;
 close all;

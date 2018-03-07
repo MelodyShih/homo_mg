@@ -1,11 +1,9 @@
-% HJ-FEM - finite element package : refine_tri.m
 %
-%----------------------------------------------------------------- 
 %
 % Antti Hannukainen 30.8.2007 Oulunkylä
 %
 % Revised by Antti Hannukainen 10.1.2008 Otaniemi
-% Brama revision by Antti Hannukainen 27.10.2008
+% Revised by Antti Hannukainen 27.10.2008
 %
 %-----------------------------------------------------------------
 %
@@ -16,12 +14,10 @@
 %
 %   child.t_parent = parent element
 %
-% If the edge / face have no parent, we use index 0.
-%
 %
 % CALLING SYNTAX IS 
 %
-% function [rmesh] = refine_tri(mesh)
+% function [rmesh,ch] = refine_tri(mesh)
 %
 %           
 %

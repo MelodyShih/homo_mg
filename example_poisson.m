@@ -3,9 +3,11 @@
 %
 %----------------------------------------------------------------- 
 %
-% Solve the Poisson equation on domain (0,1)x(0,1) with zero dirichlet
+% Solve the Poisson equation on domain (0,r)x(0,r) with zero dirichlet
 % boundary condition and load function 1.  Finite element method with
 % triangular P1-elements is used.
+%
+% requires util-folder in the path
 %
 
 

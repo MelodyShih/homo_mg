@@ -11,6 +11,9 @@
 % The linear system is solved using the fixed point iteration from Th 1.1.
 % The parameter Lambda and the size of the domain r are both fixed. 
 % 
+% requires util-folder in the path
+%
+
 close all;
 clear all;
 
@@ -25,7 +28,6 @@ Nref = 2;  % number or refinements for the FE - mesh
 At = make_1_9_cell_At(r, t2c);
 
 % The corresponding homogenised parameter is 3.
-% lambda is chosen as 0.3
 Ahomo = 3;
 
 [x,error] = fp_solver(mesh, At, Ahomo, L);

@@ -10,6 +10,9 @@
 % 
 % Finite element method with triangular P1-elements is used.
 %
+% requires util-folder in the path
+%
+
 close all;
 clear all;
 

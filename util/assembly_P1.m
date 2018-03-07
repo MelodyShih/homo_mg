@@ -10,9 +10,9 @@
 % The matrix K corresponds to finte element discretization of the 
 % the bilinear form
 %
-% \int_\Omega \nabla u*A*\nabla v \dx + c*u*v.
+% \int_\Omega \nabla u^T*A*\nabla v \dx + c*u*v.
 %
-% where A is piecewise constant over triangulation such that
+% where A is piecewise constant over given triangulation such that
 % that A_|K = At(K). The vector F corresponds to finte element 
 % discretization of the linear functional
 %
@@ -38,7 +38,7 @@
 %             val(i,j) = fun(x(i,j), y(i,j)). 
 %
 %     K     = Np x Np sparse matrix corresponding to P1-FE discretization
-%             of the bilinear form \int_\Omega \nabla u*A*\nabla v \dx +
+%             of the bilinear form \int_\Omega \nabla u^T*A*\nabla v \dx +
 %             c*u*v. Here Np is the number of nodes in mesh. 
 %
 %     F     = Np x 1 full vector corresponding to P1-FE discretization
@@ -51,7 +51,7 @@ function [K,F] = assembly_P1(mesh,At,c,fun)
 
 Ndof = size(mesh.p,2);
 
-% Compute vectorised affien mapping.
+% Compute vectorised affine mapping.
 map = affine_tri(mesh);
 
 X = [1/2 1/2 0 ; 0 1/2 0];

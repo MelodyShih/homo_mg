@@ -3,7 +3,7 @@
 % 
 %-----------------------------------------------------------------
 %
-% affine_tet.m constructs vectorized affine mapping.
+% affine_tri.m constructs vectorized affine mapping.
 %
 % The vectorized affine mapping consists out of matrices
 % Ax, Ay, Px, Py and vectors bx, by. Row i in Ax(i,:) corresponds
@@ -20,8 +20,8 @@
 %
 % The structure is designed to support operations for all
 % elements simultaniously. In practice this means, that a mapping
-% of integration points from reference element to global element
-% can be done simply as
+% of integration points (x1,y1),(x2,y2),...from reference element 
+% to global element can be done simply as
 %
 % Ax *  x1 x2 x3 ...   + bx
 %       y1 y2 y3 ...
@@ -29,7 +29,9 @@
 % Ay *  x1 x2 x3 ...   + by
 %       y1 y2 y3 ..
 %
-% The action of the inverse of the affine mapping from reference coordinates 
+% (NOTE :In the addition of bx and by, on has to adjust the size of bx correctly).
+%
+% The action of the inverse transpose of the affine mapping from reference coordinates 
 % (x,y) to element i is collected to matrices Px and Py. 
 %
 % The calling syntax of affine_tri is
