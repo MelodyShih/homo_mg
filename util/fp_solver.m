@@ -1,6 +1,8 @@
 %
 % Antti Hannukainen 4.3.2018 / Otaniemi
 %
+% Revision 17.4.2018 / Otaniemi (Simplify the method)
+%
 %----------------------------------------------------------------- 
 %
 % Implementation of the fixed point iteration described in Th 1.1
@@ -65,49 +67,37 @@ disp('exact solve done');
 error(1) = sqrt( (xE)'*A0*(xE) );
  
 % precompute Cholesky factorisations.    
-disp('factorisations');
+disp('factorisations (rev)');
+
 [RM,p,SM] = chol(AM(in,in));
 RMT = RM';
- 
-[RHM,p,SHM] = chol(AHM(in,in));
-RHMT = RHM';
- 
+
 [RH,p,SH] = chol(AH(in,in));
 RHT = RH';
-disp('factorisations done');
+
+disp('factorisations done (rev)');
 
 for i=1:10
      
-    %% Smooth here u_0
+    %% Compute u_0 : 
     res1 = b - A*xFP;
+    u0 = 0*b;
+    u0(in) = SM*(RM\(RMT\(SM'*res1(in))));
+       
+    %% Compute u_hom
+    res2 = Lmassive^2*M*u0;
     
-    corr1 = 0*b;
-    corr1(in) = SM*(RM\(RMT\(SM'*res1(in))));
-    
-    xFP = xFP + corr1; % u0 (added !)
-    
-    %% Second smoothing step u_1 
-    res2 = b - A*xFP;
-    
-    corr2 = 0*b;
-    corr2(in) = SM*(RM\(RMT\(SM'*res2(in))));
-            
-    %% uHOM_1
-    corr3 = 0*b;
-    corr3(in) = SHM*(RHM\(RHMT\(SHM'*res2(in))));
+    uhom = 0*b;
+    uhom(in) = SH*(RH\(RHT\(SH'*res2(in))));
 
-    %% uHOM
-    res4 = res2 - AH*corr3;
-    corr4 =  0*b;
-    corr4(in) = SH*(RH\(RHT\(SH'*res4(in))));
+    %% utilde
+    res3 = AHM*uhom;
+    utilde =  0*b;
+    utilde(in) = SM*(RM\(RMT\(SM'*res3(in))));
 
-    %% \tilde u
-    res4 = AHM*corr4;
-    corr5 = 0*b;
-    corr5(in) = SM*(RM\(RMT\(SM'*res4(in))));
-           
+  
     %% Update
-    xFP(in) = xFP(in) + corr2(in)  + corr5(in);
+    xFP(in) = xFP(in) + u0(in)  + utilde(in);
         
     % evaluate error 
     error(i+1) = sqrt( (xFP-xE)'*A0*(xFP-xE) );
