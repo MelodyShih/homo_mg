@@ -1,6 +1,6 @@
 %
 % Melody Shih 26.2.2019
-% (Adapted from run_1 by Antti Hannukainen 4.3.2018 / Otaniemi)
+% (Adapted from fp_solver by Antti Hannukainen 4.3.2018 / Otaniemi)
 %
 %----------------------------------------------------------------- 
 %
