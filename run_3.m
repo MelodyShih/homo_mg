@@ -4,34 +4,49 @@
 %
 %----------------------------------------------------------------- 
 % Study the effect of contrast of coefficient, i.e. cmax/cmin
-% 
+%
 % The homogenized coefficient is fixed to 3.
 %
-% Solve the Poisson equation (A \nabla u,\nabla v) = (f,v) on domain 
-% (0,r)x(0,r) with zero dirichlet boundary condition and load function 
+% Solve the Poisson equation (A \nabla u,\nabla v) = (f,v) on domain
+% (0,r)x(0,r) with zero dirichlet boundary condition and load function
 % f = 1. The coefficient function A in each cell has value cmin / cmax
-% with 50 / 50 probability. Finite element method with triangular 
+% with 50 / 50 probability. Finite element method with triangular
 % P1-elements is used.
-% 
+%
 % requires util-folder in the path
-% 
-% 
+%
+%
 
 close all;
 clear;
 
-            r = 32;        % values of r used in the computation
+            r = 33;         % values of r used in the computation
          Nref = 1;          % number or refinements for the FE - mesh
-         Nave = 5;          % number of averaging steps used. 
+         Nave = 5;          % number of averaging steps used.
             L = 0.4;        % Lambda parameter for iterative solver.
-contrast_list = 10.^(1:4);
+contrast_list = 10.^(1:0.25:4);
          iter = zeros(size(contrast_list));
         chomo = 9;
-        Ahomo = [3.164095 4.519 11 36.31054];
             p = 0.6;        % p for cmax
+%         Ahomo_r129;
+%         Ahomo_r257;
+        Ahomo = [4.0766971 ...
+                 4.5868466 ...
+                 5.2983531 ...
+                 6.2612765 ...
+                 7.9655559 ...
+                 9.8526673 ...
+                 11.49603203 ...
+                 15.95652599 ...
+                 23.59731375 ...
+                 27.69734992 ...
+                 38.70964089 ...
+                 59.00208232 ...
+                 62.09405344]; % for r = 33 (2^4*2+1)
+
 
 for i=1:length(contrast_list)
-      
+    
     contrast = contrast_list(i);
     cmin = sqrt(chomo/contrast);
     cmax = cmin*contrast;
@@ -41,17 +56,17 @@ for i=1:length(contrast_list)
     [mesh,t2c] = make_Ur_mesh(r,Nref);
     
     for n=1:Nave
-    
+        
         % generate random pwc. on each cell of Ur.
         At = make_cmin_cmax_cell_At(r, t2c, cmin, cmax, p);
-
+        
         % The corresponding homogenised parameter is 3.
         ahomo = Ahomo(i);
-
+        
         [x,error,iterone] = fp_solver(mesh, At, ahomo, L);
         iter(i) = iter(i) + iterone;
         cf(i,n) = compute_cf(error);
-
+        
     end
     iter(i) = iter(i)/Nave;
     cfave(i) = mean(cf(i,:));
@@ -63,8 +78,8 @@ close all;
 figure;
 semilogx(contrast_list,iter,'ko--');
 title(['Number of Iterations to achieve $10^{-9}$ error in H1-semi norm, $L =$',num2str(L), ', $r =$', num2str(r)], ...
-      'FontSize',12,'Interpreter','latex');
-xlabel('$c_{max}/c_{min}$', 'FontSize',15,'Interpreter','latex'); 
+    'FontSize',12,'Interpreter','latex');
+xlabel('$c_{max}/c_{min}$', 'FontSize',15,'Interpreter','latex');
 ylabel('Iterations','FontSize',15,'Interpreter','latex');
 grid on;
 
@@ -72,7 +87,7 @@ grid on;
 figure;
 semilogx(contrast_list,cfave,'ko--');
 title(['$\lambda=$',num2str(L), ', $r = $', num2str(r)], ...
-      'FontSize',12,'Interpreter','latex');
-xlabel('$c_{max}/c_{min}$','FontSize',15,'Interpreter','latex'); 
+    'FontSize',12,'Interpreter','latex');
+xlabel('$c_{max}/c_{min}$','FontSize',15,'Interpreter','latex');
 ylabel('$\rho$','FontSize',15,'Interpreter','latex');
 grid on;
