@@ -33,6 +33,10 @@
 
 function [xFP,error,i,R,Din] = modified_fp_solver(mesh, At, Ahom, nsweeps, ...
                                                   w, maxiter, spectral)
+if nargin == 4
+    maxiter = 30;
+    spectral = 0;
+end
 
 disp('assembly');
 
@@ -47,14 +51,24 @@ A0 = assembly_P1(mesh,1,0,@(x,y)(ones(size(x))));
 
 disp('assembly done');
 
-% Zero initial guess
-xFP = 0*b;
- in = mesh.in;
+in = mesh.in;
 
 if(spectral)
-    % Set the right hand side such that the true solution has a_i = 1
     [E,V] = eig(full(A(in,in)));
-    b(in) = sum(E*V,2);
+    b = 0*b;
+    figure;
+    plot(diag(V));
+end
+
+% Initial guess
+xFP = 0*b;
+if(spectral)
+    % initialize x such that the error in each eigendirection is 1.
+    temp = ones(size(b(in)));
+%     temp(10:end) = 0;
+    xFP(in) = E*temp;
+%     xFP(in) = E*ones(size(b(in)));
+
 end
 
 Din = diag(diag(A(in,in)));
@@ -82,40 +96,41 @@ disp('factorisations done (rev)');
 % totaliter = 0;
 disp(['fixed-point iteration step:',num2str(0),'error (H1-semi) :',num2str(error(1))]);
 
-
+err1=sqrt( (xFP-xE)'*A0*(xFP-xE) );
 for i=1:maxiter   
     %% Pre-smoothing: 
     for s=1:nsweeps
         xFP(in) = w*(Din\(b(in) - R*xFP(in))) + (1-w)*xFP(in);
         if(spectral && s==nsweeps)
-            err = sqrt( (xFP-xE)'*A0*(xFP-xE) );
-            semilogy([0 length(A(in,in))], [1 1], 'Color','black', 'LineWidth', 2);
-            hold on;
-            title(['Sweeps ', num2str(s),', Err = ',num2str(err)],'Interpreter', 'latex');
-            temp = E\(xFP(in) - xE(in));   
-            semilogy(abs(temp),'.');
-            ylim([1e-10 100]);
-            grid on;
-            www = waitforbuttonpress;
-            hold off;
+            err1 = sqrt( (xFP-xE)'*A0*(xFP-xE) );
+%             semilogy([0 length(A(in,in))], [1 1], 'Color','black', 'LineWidth', 2);
+%             hold on;
+%             title(['Sweeps ', num2str(s),', Err = ',num2str(err1)],'Interpreter', 'latex');
+%             temp = E\(xFP(in) - xE(in));   
+%             semilogy(abs(temp),'.');
+%             ylim([1e-10 100]);
+%             grid on;
+%             www = waitforbuttonpress;
+%             hold off;
         end
     end
     if(spectral)
-        semilogy([0 length(A(in,in))], [1 1], 'Color','black', 'LineWidth', 2);
-        hold on;
-        temp = E\(xFP(in) - xE(in));    
-        semilogy(abs(temp),'.');
-        ylim([1e-16 100]);
+%         figure;
+%         semilogy([0 length(A(in,in))], [1 1], 'Color','black', 'LineWidth', 2);
+%         hold on;
+%         temp = E\(xFP(in) - xE(in));    
+%         semilogy(abs(temp),'.');
+%         ylim([1e-16 100]);
     end
     
     %% Compute u_hom
     res2 = b(in) - A(in,in)*xFP(in);
     uhom = 0*b;
     uhom(in) = SH*(RH\(RHT\(SH'*res2)));
-%     if(spectral)
+    if(spectral)
 %         temp = E\uhom(in);
 %         semilogy(abs(temp),'x');
-%     end
+    end
 
     %% Update x
     xFP(in) = xFP(in)+uhom(in);
@@ -124,20 +139,15 @@ for i=1:maxiter
         semilogy(abs(temp),'.');
     end
     
-    %% Post-smoothing
-    for s=1:nsweeps
-        xFP(in) = w*(Din\(b(in) - R*xFP(in))) + (1-w)*xFP(in);
-    end
     if(spectral)
-        temp = E\(xFP(in) - xE(in));
-        semilogy(abs(temp),'.');
-        legend('True', 'Pre-smoothing', 'Homogenized Update');
         lgd=legend('y = 1', 'Pre-smoothing', 'Homogenized Update');%, 'Post-smoothing');
+%         lgd=legend('y = 1', 'Homogenized Update');%, 'Post-smoothing');
         lgd.Interpreter='latex';
         lgd.FontSize=10;
         lgd.Location='best';
         err = sqrt( (xFP-xE)'*A0*(xFP-xE) );
-        title(['Iteration ', num2str(i),', w = ',num2str(w),', Err=',num2str(err)],'Interpreter', 'latex');
+        title(['Iteration ', num2str(i),', w = ',num2str(w),', Err=',num2str(err),' (',num2str(err1),')'] ... 
+               ,'Interpreter', 'latex');
         grid on;
 %         saveas(gcf,['jsmooth', num2str(i),'w',num2str(w*10)],'epsc')
 %         saveas(gcf,['homosol'],'epsc');

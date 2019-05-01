@@ -20,9 +20,9 @@ close all;
       r = 10;  % size of the domain Ur = (0,r)x(0,r)
    Nref = 1;   % number or refinements for the FE - mesh
    cmin = 1;
-   cmax = 4;
-      w = 0.5; % weight for weighted jacobian smoother
-maxiter = 10;  
+   cmax = 9;
+      w = 2/3; % weight for weighted jacobian smoother
+maxiter = 50;  
    
 % generate mesh
 [mesh,t2c] = make_Ur_mesh(r,Nref);
@@ -35,8 +35,8 @@ Ahomo = sqrt(cmin*cmax);
 
 
 
-[x,error,iter,~,~] = modified_fp_solver(mesh, At, Ahomo, 50, w, maxiter, 0);
-[x1,error1,iter1,~,~] = jacobi_solver(mesh, At, Ahomo, 50, w);
+[x,error,iter,~,~] = modified_fp_solver(mesh, At, Ahomo, 0, w, maxiter, 1);
+% [x1,error1,iter1,~,~] = jacobi_solver(mesh, At, Ahomo, 50, w);
 
 [cf,cof] = compute_cf(error);
 % [cf1,cof1] = compute_cf(error1);

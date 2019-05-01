@@ -124,18 +124,20 @@ for i=1:maxiter
     end
     
     %% utilde
+    %res3 = AH*uhom - A*uhom;
     res3 = AHM*uhom;
     utilde =  0*b;
     utilde(in) = SM*(RM\(RMT\(SM'*res3(in))));
     
     %% Update
+    %xFP(in) = xFP(in) + u0(in) + utilde(in) + uhom(in);
     xFP(in) = xFP(in) + u0(in) + utilde(in);
     
     if(spectral)
         temp = E\(xFP(in) - xE(in));
         semilogy(abs(temp),'.');
         lgd = legend('True', '$v_{prev} + u_0$', '$v_{prev} + u_{0} + u_{homo}$', ...
-            '$v_{prev} + u_{0}$ + $u_{homo}$ +$u_{tilde}$');
+            '$v_{prev} + u_{0}$ + $u_{tilde}$');
         lgd.Interpreter='latex';
         lgd.FontSize=10;
         lgd.Location='best';
